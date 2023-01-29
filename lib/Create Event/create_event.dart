@@ -168,6 +168,7 @@ class _createEventState extends State<createEvent> {
         .collection('createdEvent')
         .doc(user.uid + docRef.id)
         .set({
+      'organizer': user.uid,
       'event id': docRef.id,
     });
 

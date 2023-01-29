@@ -8,6 +8,8 @@ import 'package:flutter_application_1/pages/login/component/login_auth_provider.
 import 'package:flutter_application_1/pages/signup/components/signup_auth_provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'package:flutter_application_1/pages/navpages/home_page2.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -22,12 +24,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (context) => SignupAuthProvider()
-        ),
-        ChangeNotifierProvider(
-          create: (context) => LoginAuthProvider()
-        ),
+        ChangeNotifierProvider(create: (context) => SignupAuthProvider()),
+        ChangeNotifierProvider(create: (context) => LoginAuthProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -53,7 +51,7 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, userSnp) {
             if (userSnp.hasData) {
-              return HomePage();
+              return HomePage2();
             }
             return WelcomePage();
           },
@@ -64,8 +62,6 @@ class MyApp extends StatelessWidget {
         // home: AllNearEvents(),
 
         // home: const SignupPage(),
-
-
       ),
     );
   }

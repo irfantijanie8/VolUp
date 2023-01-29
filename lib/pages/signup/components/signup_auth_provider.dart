@@ -2,9 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/home/home_page.dart';
+import 'package:flutter_application_1/pages/navpages/home_page2.dart';
 import 'package:flutter_application_1/route/routing_page.dart';
 
-class SignupAuthProvider with ChangeNotifier{
+class SignupAuthProvider with ChangeNotifier {
   static Pattern pattern =
       r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
 
@@ -13,12 +14,11 @@ class SignupAuthProvider with ChangeNotifier{
 
   bool loading = false;
 
-  void signupValidation({
-    required TextEditingController? fullname,
-    required TextEditingController? emailAddress,
-    required TextEditingController? password,
-    required BuildContext context
-  }) async {
+  void signupValidation(
+      {required TextEditingController? fullname,
+      required TextEditingController? emailAddress,
+      required TextEditingController? password,
+      required BuildContext context}) async {
     if (fullname!.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -54,42 +54,39 @@ class SignupAuthProvider with ChangeNotifier{
         ),
       );
       return;
-    }
-    else{
-      try{
+    } else {
+      try {
         loading = true;
         notifyListeners();
-        userCredential = 
+        userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
-              email: emailAddress.text, 
-              password: password.text,
+          email: emailAddress.text,
+          password: password.text,
         );
         loading = true;
         notifyListeners();
         FirebaseFirestore.instance
-        .collection("users")
-        .doc(userCredential!.user!.uid)
-        .set(
+            .collection("users")
+            .doc(userCredential!.user!.uid)
+            .set(
           {
             "fullName": fullname.text,
             "emailAdress": emailAddress.text,
             "password": password.text,
             "userUid": userCredential!.user!.uid,
           },
-        ).then(
-          (value) {
-            loading = false;
-            notifyListeners();
-            RoutingPage.goTonext(
-                context: context,
-                navigateTo: HomePage(),
-              );
-            }
-          );
-        } on FirebaseAuthException catch(e){
+        ).then((value) {
           loading = false;
           notifyListeners();
-          if (e.code == "weak-password") {
+          RoutingPage.goTonext(
+            context: context,
+            navigateTo: HomePage2(),
+          );
+        });
+      } on FirebaseAuthException catch (e) {
+        loading = false;
+        notifyListeners();
+        if (e.code == "weak-password") {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text("weak-password"),

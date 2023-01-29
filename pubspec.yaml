@@ -87,7 +87,18 @@ flutter:
     - assets/images/pdf.png
     - assets/images/volcert.png
     - assets/images/silver.png
-    - assets/images/gold.png  
+    - assets/images/gold.png
+    - images/welcome-one.png
+    - images/welcome-two.png
+    - images/welcome-three.png
+    - images/button-one.png
+    - images/cartoonping.jpg
+    - images/hiking.png
+    - images/kayaking.png
+    - images/snorkling.png
+    - images/balloning.png
+    - images/mountain.jpeg
+    - images/icon1.jpg  
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

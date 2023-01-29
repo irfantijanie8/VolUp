@@ -2,8 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Create%20Event/create_event.dart';
 import 'package:flutter_application_1/pages/NearEvents/all_near_events.dart';
+import 'package:flutter_application_1/pages/history/createHistory.dart';
+import 'package:flutter_application_1/pages/history/joinHistory.dart';
 import 'package:flutter_application_1/pages/home/home_page.dart';
 import 'package:flutter_application_1/pages/login/login_page.dart';
+import 'package:flutter_application_1/pages/navpages/home_page2.dart';
 import 'package:flutter_application_1/route/routing_page.dart';
 
 import 'package:flutter_application_1/Profile/profile_page.dart';
@@ -35,16 +38,14 @@ class BuildDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: IconButton(
-              onPressed: () {
-                RoutingPage.goTonext(
-                  context: context,
-                  navigateTo: HomePage(),
-                );
-              },
-              icon: Icon(
-                Icons.home,
-              ),
+            onTap: () {
+              RoutingPage.goTonext(
+                context: context,
+                navigateTo: HomePage2(),
+              );
+            },
+            leading: Icon(
+              Icons.home,
             ),
             title: Text("Home"),
           ),
@@ -73,11 +74,26 @@ class BuildDrawer extends StatelessWidget {
             title: Text("Nearby Events"),
           ),
           ListTile(
-            leading: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.history,
-              ),
+            onTap: () {
+              RoutingPage.goTonext(
+                context: context,
+                navigateTo: createHistory(),
+              );
+            },
+            leading: Icon(
+              Icons.create,
+            ),
+            title: Text("Created History"),
+          ),
+          ListTile(
+            onTap: () {
+              RoutingPage.goTonext(
+                context: context,
+                navigateTo: joinHistory(),
+              );
+            },
+            leading: Icon(
+              Icons.create,
             ),
             title: Text("My History"),
           ),
@@ -122,7 +138,6 @@ class _nameDataState extends State<nameData> {
   String? name = '';
 
   Future _getDataFromDatabase() async {
-    print("uid = ");
     print(FirebaseAuth.instance.currentUser!.uid);
     await FirebaseFirestore.instance
         .collection("users")
@@ -161,8 +176,6 @@ class _emailDataState extends State<emailData> {
   String? email = '';
 
   Future _getDataFromDatabase() async {
-    print("uid = ");
-    print(FirebaseAuth.instance.currentUser!.uid);
     await FirebaseFirestore.instance
         .collection("users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
