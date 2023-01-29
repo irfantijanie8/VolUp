@@ -30,9 +30,10 @@ class _profilePageState extends State<profilePage> {
         .then((snapshot) async {
       if (snapshot.exists) {
         setState(() {
-          name = snapshot.data()!['full name'];
-          email = snapshot.data()!['email'];
-          image = snapshot.data()!['userImage'];
+          name = snapshot.data()!['fullName'];
+          email = snapshot.data()!['emailAdress'];
+          image =
+              "https://firebasestorage.googleapis.com/v0/b/volup-1052a.appspot.com/o/files%2FCommunity-Beach-Cleanups.png?alt=media&token=3e8c0e1a-c2c4-4406-a6e1-1c49c38967dc";
           eventNum = snapshot.data()!['event num'];
         });
       }

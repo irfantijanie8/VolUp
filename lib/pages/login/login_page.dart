@@ -6,7 +6,7 @@ import 'package:flutter_application_1/pages/login/component/top_part.dart';
 import 'package:flutter_application_1/pages/login/component/end_part.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({ Key? key}) : super(key: key);
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -52,10 +52,10 @@ class _LoginPageState extends State<LoginPage> {
             //End part
             EndPart(
               loading: loginAuthProvider.loading,
-              onPressed: (){
+              onPressed: () {
                 loginAuthProvider.loginPageValidation(
-                  emailAddress: email, 
-                  password: password, 
+                  emailAddress: email,
+                  password: password,
                   context: context,
                 );
               },
