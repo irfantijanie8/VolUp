@@ -5,6 +5,8 @@ import 'package:flutter_application_1/pages/home/home_page.dart';
 import 'package:flutter_application_1/pages/login/login_page.dart';
 import 'package:flutter_application_1/route/routing_page.dart';
 
+import 'package:flutter_application_1/Profile/profile_page.dart';
+
 class BuildDrawer extends StatelessWidget {
   const BuildDrawer({Key? key}) : super(key: key);
 
@@ -42,11 +44,14 @@ class BuildDrawer extends StatelessWidget {
             title: Text("Home"),
           ),
           ListTile(
-            leading: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.person,
-              ),
+            onTap: () {
+              RoutingPage.goTonext(
+                context: context,
+                navigateTo: profilePage(),
+              );
+            },
+            leading: Icon(
+              Icons.person,
             ),
             title: Text("Profile"),
           ),

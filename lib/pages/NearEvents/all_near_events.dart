@@ -19,7 +19,8 @@ class _AllNearEventsState extends State<AllNearEvents> {
   // Data data = Data();
 
   Future _getTheDistance() async {
-    _currentUserPosition = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    _currentUserPosition = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
 
     // for (int i = 0; i < data.allnearevents.length; i++) {
     //   double storelat = data.allnearevents[i]['lat'];
@@ -56,71 +57,67 @@ class _AllNearEventsState extends State<AllNearEvents> {
         title: Text("All Volunteer Events Near you"),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+          child: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('event').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+              if (streamSnapshot.hasError) {
+                return Text('Error: ${streamSnapshot.error}');
+              }
+              if (!streamSnapshot.hasData) {
+                return CircularProgressIndicator();
+              }
+              return ListView.separated(
+                  separatorBuilder: (context, index) => Divider(),
+                  itemCount: streamSnapshot.data!.docs.length,
+                  itemBuilder: (context, index) {
+                    double storelat =
+                        streamSnapshot.data!.docs[index]['latitude'];
+                    double storelng =
+                        streamSnapshot.data!.docs[index]['longitude'];
 
-        child: StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('zTest_Jangan_buang_lagi').snapshots(),
-          builder: (context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
-            if (streamSnapshot.hasError) {
-              return Text('Error: ${streamSnapshot.error}');
-            }
-            if (!streamSnapshot.hasData) {
-              return CircularProgressIndicator();
-            }
-            return ListView.separated(
-            separatorBuilder: (context, index) => Divider(),
-            itemCount: streamSnapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              double storelat = streamSnapshot.data!.docs[index]['latitude'];
-              double storelng = streamSnapshot.data!.docs[index]['longitude'];
+                    // distanceImMeter = Geolocator.distanceBetween(
+                    //   _currentUserPosition!.latitude,
+                    //   _currentUserPosition!.longitude,
+                    //   storelat,
+                    //   storelng,
+                    // );
 
-              // distanceImMeter = Geolocator.distanceBetween(
-              //   _currentUserPosition!.latitude,
-              //   _currentUserPosition!.longitude,
-              //   storelat,
-              //   storelng,
-              // );
-              
-              var distance = distanceImMeter?.round().toInt();
-              
-              if (distance! <= 50000) {
-                  return ListTile(
-                    leading: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                streamSnapshot.data!.docs[index]['image']),
-                            fit: BoxFit.fill),
-                      ),
-                    ),
-                    title: Text(
-                      streamSnapshot.data!.docs[index]['name'],
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onTap: () {
-                      RoutingPage.goTonext(
-                        context: context,
-                        navigateTo: NavigationScreen(
-                            storelat,
-                            storelng
+                    var distance = distanceImMeter?.round().toInt();
+
+                    if (distance! <= 50000) {
+                      return ListTile(
+                        leading: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                                image: NetworkImage(
+                                    streamSnapshot.data!.docs[index]['image']),
+                                fit: BoxFit.fill),
+                          ),
                         ),
+                        title: Text(
+                          streamSnapshot.data!.docs[index]['title'],
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        onTap: () {
+                          RoutingPage.goTonext(
+                            context: context,
+                            navigateTo: NavigationScreen(storelat, storelng),
+                          );
+                        },
                       );
-                    },
-                  );
-          } else {
-            return Container();
-          }
-        }
-      );
-    },
-    )
-      ),
+                    } else {
+                      return Container();
+                    }
+                  });
+            },
+          )),
     );
   }
 }

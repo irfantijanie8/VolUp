@@ -68,9 +68,10 @@ class _NavigationScreenState extends State<NavigationScreen> {
                   left: 15,
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(builder: (context) => MyApp()),
-                          (route) => false);
+                      Navigator.pop(context);
+                      // Navigator.of(context).pushAndRemoveUntil(
+                      //     MaterialPageRoute(builder: (context) => MyApp()),
+                      //     (route) => false);
                     },
                     child: Icon(Icons.arrow_back),
                   ),
@@ -144,10 +145,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
               position:
                   LatLng(currentLocation.latitude!, currentLocation.longitude!),
               infoWindow: InfoWindow(
-                  title: '${double.parse(
-                          (getDistance(LatLng(widget.lat, widget.lng))
-                              .toStringAsFixed(2)))} km'
-                     ),
+                  title:
+                      '${double.parse((getDistance(LatLng(widget.lat, widget.lng)).toStringAsFixed(2)))} km'),
               onTap: () {
                 print('market tapped');
               },
@@ -178,7 +177,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     addPolyLine(polylineCoordinates);
   }
 
-  addPolyLine(List<LatLng>polylineCoordinates) {
+  addPolyLine(List<LatLng> polylineCoordinates) {
     PolylineId id = PolylineId('poly');
     Polyline polyline = Polyline(
       polylineId: id,
@@ -190,7 +189,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     setState(() {});
   }
 
-   double calculateDistance(lat1, lon1, lat2, lon2) {
+  double calculateDistance(lat1, lon1, lat2, lon2) {
     var p = 0.017453292519943295;
     var c = cos;
     var a = 0.5 -
@@ -203,6 +202,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return calculateDistance(curLocation.latitude, curLocation.longitude,
         destposition.latitude, destposition.longitude);
   }
+
   addMarker() {
     setState(() {
       sourcePosition = Marker(
