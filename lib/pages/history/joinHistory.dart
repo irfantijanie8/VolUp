@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:rxdart/rxdart.dart';
 
 class joinHistory extends StatefulWidget {
   const joinHistory({super.key});
@@ -12,6 +13,24 @@ class joinHistory extends StatefulWidget {
 }
 
 class _joinHistoryState extends State<joinHistory> {
+  List<String> eventList = [];
+  List<Stream<DocumentSnapshot<Map<String, dynamic>>>> combineList = [];
+
+  Future _getData() async {
+    final querySnapshot = await FirebaseFirestore.instance
+        .collection('joinedEvent')
+        .where('volunteer', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .get();
+
+    for (var doc in querySnapshot.docs) {
+      // Getting data directly
+      // Getting data from map
+      Map<String, dynamic> data = doc.data();
+      eventList.add(data['event id']);
+    }
+    print(eventList);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +38,7 @@ class _joinHistoryState extends State<joinHistory> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Color.fromARGB(255, 132, 18, 238),
-        title: Text("Created Event"),
+        title: Text("Joined Event"),
       ),
       body: Padding(
           padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
@@ -60,11 +79,27 @@ class _joinHistoryState extends State<joinHistory> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onTap: () {},
+                      onTap: () {
+                        _getData();
+                      },
                     );
                   });
             },
           )),
     );
+  }
+}
+
+class printSnap extends StatefulWidget {
+  const printSnap({super.key});
+
+  @override
+  State<printSnap> createState() => _printSnapState();
+}
+
+class _printSnapState extends State<printSnap> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

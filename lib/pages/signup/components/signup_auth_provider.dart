@@ -74,6 +74,7 @@ class SignupAuthProvider with ChangeNotifier {
             "emailAdress": emailAddress.text,
             "password": password.text,
             "userUid": userCredential!.user!.uid,
+            "event num": 0,
           },
         ).then((value) {
           loading = false;
